@@ -1,9 +1,9 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
-    <div className="flex ">
+    <div className="flex">
       <Link to="/">
         <p className="text-2xl font-mono p-[2rem]">Notes</p>
       </Link>
@@ -16,7 +16,6 @@ function Navbar() {
       <div className="flex-initial w-max text-center">
         <p className="text-lg font-mono pl-[10rem] pr-[5rem] py-[4rem]">User</p>
       </div>
-
     </div>
   );
 }

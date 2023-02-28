@@ -1,5 +1,5 @@
 const express = require("express");
-const notes = require("./constants/data");
+const notes = require("./constants/notes");
 const dotenv = require("dotenv");
 
 const app = express();
