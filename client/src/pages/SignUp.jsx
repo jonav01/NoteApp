@@ -1,18 +1,27 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
+import Loader from "../components/Loader";
 import Navbar from "../components/Navbar";
+import ErrorContainer from "./ErrorContainer";
 
 function SignUp() {
+  // All form states
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
   const [name, setName] = useState("");
   const [reTypedPassword, setreTypedPassword] = useState("");
+
+  //All form validation states
   const [isValidEmail, setisValidEmail] = useState(true);
   const [isValidName, setisValidName] = useState(true);
   const [isValidPhone, setisValidPhone] = useState(true);
   const [isValidRetypedPassword, setisValidRetypedPassword] = useState(true);
   const [isValidPassword, setisValidPassword] = useState(true);
+
+  //Loading state
+  const [loading, setLoading] = useState(false);
+  const [signupError, setSignupError] = useState("");
   const navigate = useNavigate();
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -60,7 +69,7 @@ function SignUp() {
       setisValidPassword(false);
     }
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (
       isValidEmail &&
@@ -69,7 +78,33 @@ function SignUp() {
       isValidPhone &&
       isValidRetypedPassword
     ) {
-      navigate("/home");
+      const formData = {
+        email,
+        phone,
+        password,
+        name,
+      };
+      try {
+        setLoading(true);
+        const response = await fetch("http://localhost:8080/api/users", {
+          method: "POST", // *GET, POST, PUT, DELETE, etc.
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData), // body data type must match "Content-Type" header
+        });
+        if (!response.ok) {
+          throw new Error("Email already exists !");
+        } else {
+          const responseData = await response.json();
+          console.log(responseData);
+          navigate("/");
+        }
+      } catch (err) {
+        setLoading(false);
+        console.log(err.message);
+        setSignupError(err.message);
+      }
     }
   };
   return (
@@ -119,6 +154,9 @@ function SignUp() {
           {!isValidEmail && (
             <p className="my-2 text-red-700">Please Enter a valid email</p>
           )}
+          {signupError !== "" && (
+            <p className="my-2 text-red-700">This email is already under use</p>
+          )}
           <label className="block mb-4 text-[1.4rem] font-serif ">
             Password:
           </label>
@@ -158,6 +196,7 @@ function SignUp() {
           >
             SignUp
           </button>
+          {loading && <Loader />}
         </form>
       </div>
     </div>

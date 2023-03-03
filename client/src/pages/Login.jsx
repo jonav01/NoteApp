@@ -1,11 +1,17 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
+import Loader from "../components/Loader";
+import ErrorContainer from "./ErrorContainer";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isValidEmail, setisValidEmail] = useState(true);
   const [isValidPassword, setisValidPassword] = useState(true);
+
+  // const [loginError, setLoginError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [loginError, setloginError] = useState("")
   const navigate = useNavigate();
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -26,10 +32,34 @@ function Login() {
       setisValidPassword(false);
     }
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (isValidEmail && isValidPassword) {
-      navigate("/home");
+      const formData = {
+        email,
+        password,
+      };
+
+      try {
+        setLoading(true);
+        const response = await fetch("http://localhost:8080/api/users/login", {
+          method: "POST", // *GET, POST, PUT, DELETE, etc.
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData), // body data type must match "Content-Type" header
+        });
+       if(!response.ok){
+        throw new Error("Invalid user !")
+       }else{
+        const responseData = await response.json()
+        navigate('/')
+        localStorage.setItem('loggedInUser' , JSON.stringify(responseData))
+       }
+      } catch (err) {
+        setLoading(false)
+        setloginError(err.message)
+      }
     }
   };
   return (
@@ -63,16 +93,21 @@ function Login() {
           {!isValidPassword && (
             <p className="my-2 text-red-700">Please Enter a valid Password</p>
           )}
-          <button
-            type="submit"
-            className="w-[8rem] mt-6 px-4 py-2 text-[1.4rem]
+          {loading ? (
+            <Loader />
+          ) : (
+            <button
+              type="submit"
+              className="w-[8rem] mt-6 px-4 py-2 text-[1.4rem]
            bg-cyan-300 rounded-full transition-all scale-125
            hover:scale-100
            "
-          >
-            Login
-          </button>
+            >
+              Log In
+            </button>
+          )}
         </form>
+        {loginError !== '' && <ErrorContainer err={loginError} />}
       </div>
     </div>
   );
