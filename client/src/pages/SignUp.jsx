@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import Loader from "../components/Loader";
-import Navbar from "../components/Navbar";
-import ErrorContainer from "./ErrorContainer";
-
+import { registerUser } from "../actions/userActions";
 function SignUp() {
   // All form states
   const [email, setEmail] = useState("");
@@ -19,9 +18,9 @@ function SignUp() {
   const [isValidRetypedPassword, setisValidRetypedPassword] = useState(true);
   const [isValidPassword, setisValidPassword] = useState(true);
 
-  //Loading state
-  const [loading, setLoading] = useState(false);
-  const [signupError, setSignupError] = useState("");
+  const dispatch = useDispatch();
+  const userRegister = useSelector((state) => state.userRegister);
+  const { loading, error, userInfo } = userRegister;
   const navigate = useNavigate();
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -78,35 +77,16 @@ function SignUp() {
       isValidPhone &&
       isValidRetypedPassword
     ) {
-      const formData = {
-        email,
-        phone,
-        password,
-        name,
-      };
-      try {
-        setLoading(true);
-        const response = await fetch("http://localhost:8080/api/users", {
-          method: "POST", // *GET, POST, PUT, DELETE, etc.
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData), // body data type must match "Content-Type" header
-        });
-        if (!response.ok) {
-          throw new Error("Email already exists !");
-        } else {
-          const responseData = await response.json();
-          console.log(responseData);
-          navigate("/");
-        }
-      } catch (err) {
-        setLoading(false);
-        console.log(err.message);
-        setSignupError(err.message);
-      }
+      dispatch(registerUser(name, email, phone, password));
     }
   };
+
+  useEffect(() => {
+    if(userInfo){
+      navigate('/home')
+    }
+  }, [userInfo])
+  
   return (
     <div className="block align-middle justify-center w-full h-max bgcustomImage p-[10rem]">
       <div className="block bg-slate-100 px-40 py-12 m-auto w-1/2">
@@ -154,7 +134,7 @@ function SignUp() {
           {!isValidEmail && (
             <p className="my-2 text-red-700">Please Enter a valid email</p>
           )}
-          {signupError !== "" && (
+          {error && (
             <p className="my-2 text-red-700">This email is already under use</p>
           )}
           <label className="block mb-4 text-[1.4rem] font-serif ">

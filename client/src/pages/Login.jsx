@@ -1,18 +1,26 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router";
+import React, { useState, useEffect } from "react";
 import Loader from "../components/Loader";
 import ErrorContainer from "./ErrorContainer";
-
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { login } from "../actions/userActions";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isValidEmail, setisValidEmail] = useState(true);
   const [isValidPassword, setisValidPassword] = useState(true);
 
-  // const [loginError, setLoginError] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [loginError, setloginError] = useState("")
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const userLogin = useSelector((state) => state.userLogin);
+  const { loading, error, userInfo } = userLogin;
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/home");
+    }
+  }, [userInfo]);
+
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
     setisValidEmail(true);
@@ -34,33 +42,7 @@ function Login() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isValidEmail && isValidPassword) {
-      const formData = {
-        email,
-        password,
-      };
-
-      try {
-        setLoading(true);
-        const response = await fetch("http://localhost:8080/api/users/login", {
-          method: "POST", // *GET, POST, PUT, DELETE, etc.
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData), // body data type must match "Content-Type" header
-        });
-       if(!response.ok){
-        throw new Error("Invalid user !")
-       }else{
-        const responseData = await response.json()
-        navigate('/')
-        localStorage.setItem('loggedInUser' , JSON.stringify(responseData))
-       }
-      } catch (err) {
-        setLoading(false)
-        setloginError(err.message)
-      }
-    }
+    dispatch(login(email, password));
   };
   return (
     <div className="block align-middle justify-center w-screen h-screen bgcustomImage p-[10rem]">
@@ -107,7 +89,7 @@ function Login() {
             </button>
           )}
         </form>
-        {loginError !== '' && <ErrorContainer err={loginError} />}
+        {error !== "" && <ErrorContainer err={error} />}
       </div>
     </div>
   );
