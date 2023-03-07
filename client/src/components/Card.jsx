@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function Card({ heading, content }) {
+function Card({ _id, heading, content }) {
   return (
     <div className="px-40 py-10 w-full">
       <div className="block w-1/2 m-auto p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -12,7 +12,7 @@ function Card({ heading, content }) {
           {content}
         </p>
         <Link
-          to="#"
+          to={`/notes/${_id}`}
           className="inline-flex items-center px-3 py-2 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           Edit
@@ -31,7 +31,7 @@ function Card({ heading, content }) {
           </svg>
         </Link>
         <Link
-          to="#"
+          to="/home"
           className="inline-flex items-center ml-10 px-3 py-2 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           Delete

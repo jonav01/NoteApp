@@ -8,17 +8,18 @@ function Navbar() {
   const navigate = useNavigate();
   const handleLogout = () => {
     dispatch(logout());
-    if(localStorage.getItem('loggedInUser') === null)
-    navigate('/')
+    if (localStorage.getItem("loggedInUser") === null) navigate("/");
   };
   return (
     <div className="flex">
       <Link to="/">
         <p className="text-2xl font-mono p-[2rem]">Notes</p>
       </Link>
-      <div className="flex-initial w-max text-center">
-        <p className="text-lg font-mono px-[5rem] py-[4rem]">My Notes</p>
-      </div>
+      <Link to="/createNotes">
+        <div className="flex-initial w-max text-center">
+          <p className="text-lg font-mono px-[5rem] py-[4rem] hover:scale-125">My Notes</p>
+        </div>
+      </Link>
       <div className="flex-initial w-max text-center">
         <button
           className="text-lg font-mono pl-[10rem] pr-[5rem] py-[4rem] hover:cursor-pointer hover:scale-125"

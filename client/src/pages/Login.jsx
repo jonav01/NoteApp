@@ -45,7 +45,7 @@ function Login() {
     dispatch(login(email, password));
   };
   return (
-    <div className="block align-middle justify-center w-screen h-screen bgcustomImage p-[10rem]">
+    <div className="block w-screen h-screen bgcustomImage p-[10rem]">
       <div className="block bg-slate-100 px-40 py-12 m-auto w-1/2">
         <h1 className="text-xl font-semibold mb-12">Login Here</h1>
         <form onSubmit={handleSubmit}>

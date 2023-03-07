@@ -13,20 +13,12 @@ function HomePage() {
 
   const { loading, notes, error } = noteList;
   const { userInfo } = userLogin;
-  const navigate = useNavigate()
-  console.log(notes);
-  // const [notes, setNotes] = useState([])
-  // const fetchNotes = () => {
-  //   fetch("http://localhost:8080/api/notes")
-  //     .then((res) => res.json())
-  //     .then((data) => setNotes(data))
-  //     .catch((err) => alert(err));
-  // };
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(listNotes());
-    if(!userInfo){
-      navigate('/')
+    if (!userInfo) {
+      navigate("/");
     }
   }, [dispatch]);
 
@@ -35,9 +27,14 @@ function HomePage() {
       <Navbar />
       {loading && <Loader />}
       {error && <ErrorContainer err={error} />}
-      {notes?.map((elem) => {
+      {notes?.reverse().map((elem) => {
         return (
-          <Card key={elem._id} heading={elem.title} content={elem.content} />
+          <Card
+            key={elem._id}
+            _id={elem._id}
+            heading={elem.title}
+            content={elem.content}
+          />
         );
       })}
     </div>
