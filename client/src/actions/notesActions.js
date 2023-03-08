@@ -124,3 +124,42 @@ export const updateNote =
       });
     }
   };
+
+  export const deleteNote =
+  (id) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: NOTE_UPDATE_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const res = await fetch(`/api/notes/${id}`, config);
+      if (res.ok) {
+        const responseData = await res.json()
+        console.log(responseData)
+        dispatch({ type: NOTE_UPDATE_SUCCESS, payload: await res.json() });
+      } else {
+        res.status(401);
+        throw new Error("Your id is not authorized");
+      }
+    } catch (err) {
+      const message =
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message;
+      dispatch({
+        type: NOTE_UPDATE_FAIL,
+        payload: message,
+      });
+    }
+  };

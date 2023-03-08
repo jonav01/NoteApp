@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
-import { updateNote } from "../actions/notesActions";
+import { deleteNote, updateNote } from "../actions/notesActions";
 import Navbar from "../components/Navbar";
 
-function Note({ match }) {
+function Note() {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const [content, setContent] = useState("");
@@ -60,6 +60,11 @@ function Note({ match }) {
       fetchNote();
     }, [routeParams.id]);
 
+    const handleDeleteNote = () => {
+      dispatch(deleteNote(routeParams.id))
+      navigate('/home')
+    }
+
   return (
     <div className="block w-full h-full bgcustomImage">
       <Navbar />
@@ -107,6 +112,7 @@ function Note({ match }) {
            bg-cyan-300 rounded-full transition-all scale-125
            hover:scale-100
            "
+           onClick={handleDeleteNote}
           >
             Delete
           </button>

@@ -1,7 +1,14 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { deleteNote } from "../actions/notesActions";
 
 function Card({ _id, heading, content }) {
+  const dispatch = useDispatch();
+  const handleDeleteClick =() => {
+    dispatch(deleteNote(_id))
+    window.location.reload()
+  }
   return (
     <div className="px-40 py-10 w-full">
       <div className="block w-1/2 m-auto p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -30,9 +37,10 @@ function Card({ _id, heading, content }) {
             ></path>
           </svg>
         </Link>
-        <Link
-          to="/home"
+        <button
+          
           className="inline-flex items-center ml-10 px-3 py-2 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          onClick={handleDeleteClick}
         >
           Delete
           <svg
@@ -48,7 +56,7 @@ function Card({ _id, heading, content }) {
               clipRule="evenodd"
             ></path>
           </svg>
-        </Link>
+        </button>
       </div>
     </div>
   );
