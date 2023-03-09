@@ -42,7 +42,7 @@ function Note() {
   };
     useEffect(() => {
       const fetchNote = async () => {
-        const res = await fetch(`/api/notes/${routeParams.id}`, {
+        const res = await fetch(`https://mynoteapp.onrender.com/api/notes/${routeParams.id}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

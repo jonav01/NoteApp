@@ -1,13 +1,14 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { deleteNote } from "../actions/notesActions";
 
 function Card({ _id, heading, content }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleDeleteClick =() => {
     dispatch(deleteNote(_id))
-    window.location.reload()
+    navigate('/home')
   }
   return (
     <div className="px-40 py-10 w-full">
