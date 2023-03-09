@@ -15,7 +15,7 @@ export const login = (email, password) => async (dispatch) => {
   };
   try {
     dispatch({ type: USER_LOGIN_REQUEST });
-    const response = await fetch("http://localhost:8080/api/users/login", {
+    const response = await fetch("https://mynoteapp.onrender.com//api/users/login", {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
       headers: {
         "Content-Type": "application/json",
@@ -55,7 +55,7 @@ export const registerUser =
     };
     try {
       dispatch({ type: USER_REGISTER_REQUEST });
-      const response = await fetch("http://localhost:8080/api/users", {
+      const response = await fetch("https://mynoteapp.onrender.com//api/users", {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
         headers: {
           "Content-Type": "application/json",

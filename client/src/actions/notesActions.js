@@ -24,7 +24,7 @@ export const listNotes = () => async (dispatch, getState) => {
       headers: { Authorization: `Bearer ${userInfo.token}` },
     };
 
-    const res = await fetch("/api/notes", config);
+    const res = await fetch("https://mynoteapp.onrender.com/api/notes", config);
     if (res.ok) {
       dispatch({ type: NOTE_LIST_SUCCESS, payload: await res.json() });
     } else {
@@ -64,7 +64,7 @@ export const createNote =
         body: JSON.stringify(newNote),
       };
 
-      const res = await fetch("/api/notes/create", config);
+      const res = await fetch("https://mynoteapp.onrender.com/api/notes/create", config);
       if (res.ok) {
         const responseData = await res.json();
         console.log(responseData);
@@ -105,7 +105,7 @@ export const updateNote =
         body: JSON.stringify(updatedNote),
       };
 
-      const res = await fetch(`/api/notes/${id}`, config);
+      const res = await fetch(`https://mynoteapp.onrender.com/api/notes/${id}`, config);
       if (res.ok) {
         const responseData = await res.json();
         dispatch({ type: NOTE_UPDATE_SUCCESS, payload: await res.json() });
@@ -143,7 +143,7 @@ export const updateNote =
         },
       };
 
-      const res = await fetch(`/api/notes/${id}`, config);
+      const res = await fetch(`https://mynoteapp.onrender.com/api/notes/${id}`, config);
       if (res.ok) {
         const responseData = await res.json()
         console.log(responseData)
