@@ -1,7 +1,18 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+
 function LandingPage() {
+  const navigate = useNavigate();
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+  
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/home");
+    }
+  }, [userInfo]);
+
   return (
     <div className="h-screen bgcustomImage">
       <div className="p-[10rem] text-center">
@@ -11,20 +22,20 @@ function LandingPage() {
         </span>
         <div className="flex align-middle justify-center mt-16">
           <Link to="/login">
-          <button
-            className="w-40 mr-8 p-4 text-lg font-sans font-semibold rounded-full 
+            <button
+              className="w-40 mr-8 p-4 text-lg font-sans font-semibold rounded-full 
           flex-initial transition-all hover:scale-125 bg-slate-300"
-          >
-            Login
-          </button> 
+            >
+              Login
+            </button>
           </Link>
           <Link to="/signup">
-          <button
-            className="w-40 p-4 text-lg font-sans font-semibold rounded-full 
+            <button
+              className="w-40 p-4 text-lg font-sans font-semibold rounded-full 
           flex-initial transition-all hover:scale-125 bg-slate-300"
-          >
-            Sign Up
-          </button>
+            >
+              Sign Up
+            </button>
           </Link>
         </div>
       </div>

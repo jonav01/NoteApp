@@ -7,10 +7,11 @@ import { listNotes } from "../actions/notesActions";
 import ErrorContainer from "./ErrorContainer";
 import { useNavigate } from "react-router";
 function HomePage() {
-  const dispatch = useDispatch();
   const noteList = useSelector((state) => state.noteList);
   const userLogin = useSelector((state) => state.userLogin);
-
+  const noteCreate = useSelector((state) => state.noteCreate);
+  const dispatch = useDispatch();
+  const { success: successCreate } = noteCreate;
   const { loading, notes, error } = noteList;
   const { userInfo } = userLogin;
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ function HomePage() {
     if (!userInfo) {
       navigate("/");
     }
-  }, [dispatch]);
+  }, [dispatch, successCreate]);
 
   return (
     <div className="w-full h-max bgcustomImage">

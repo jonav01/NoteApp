@@ -85,7 +85,7 @@ function CreateNote() {
            hover:scale-100
            "
           >
-            Log In
+            Create
           </button>
         </form>
       </div>
